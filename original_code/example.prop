@@ -1,0 +1,16 @@
+# This file contains the options for a execution of Harris 3D
+
+#Neigborhood
+type-neighborhood = adaptive
+parameter-neighborhood = 0.01
+
+#Harris Parameter
+K = 0.04
+
+#Number of rings for maxima detection
+ring-maxima-detection = 1
+
+#Final selection
+interest-points-selection = fraction
+parameter-selection = 0.01
+

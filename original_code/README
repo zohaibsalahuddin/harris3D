@@ -1,0 +1,8 @@
+For Ubuntu: 
+Use the following command -> 
+
+g++ main.cpp Mesh.cpp Vertex.cpp util.cpp Properties.cpp HarrisDetector.cpp -o test -lgsl -lgslcblas
+
+For QT:
+
+Include the files and add the following libraries -lgsl and -lgslcblas
