@@ -6,12 +6,22 @@
  *	This file contains declarations for functions 
  *	to open the input file containing the vertices
  *	and faces information
+------------------------------------------------
+ *	Created By:
+ *		Zohaib Salahuddin
+ *		Abdullah Thabit
+ *		Ahmed Mustafa Ahmed AbdulMajid Gouda
 */
 
 #ifndef __FILE_READ__
 #define __FILE_READ__
 
+#include "Faces.h"
+#include "Vertices.h"
+
+using namespace std;
+
 void skipline(istream &in);
-int readVertFace (const string filePath , int dummy_vertex , int dummy_face);
+int readVertFace (const string filePath , Faces *& ptrFaces , Vertices *& ptrVertices);
 
 #endif

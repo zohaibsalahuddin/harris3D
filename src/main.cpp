@@ -1,0 +1,73 @@
+/*
+	Date Created: 24thNovember
+	FILENAME : main.cpp
+------------------------------------------------
+ *
+ *	This file contains implementation for the
+ *	main file testing the functionality of the
+ *	overall program.
+------------------------------------------------
+ *	Created By:
+ *		Zohaib Salahuddin
+ *		Abdullah Thabit
+ *		Ahmed Mustafa Ahmed AbdulMajid Gouda
+*/
+
+#include <iostream>
+#include <vector>
+#include "Faces.h"
+#include "Vertices.h"
+#include "fileread.h"
+
+using namespace std;
+
+int Faces::numFaces =0;
+int Vertices::numVertices =0;
+
+int main(void)
+{
+	
+	Faces * ptrfaces;
+	Vertices * ptrvertices;
+
+	cout << "Calling the Function to read the Vertex and Faces" << endl;
+	readVertFace("/home/zohaib123/Desktop/Harris3D/harris3D/src/cone.off",ptrfaces,ptrvertices);
+
+	cout << "Printing the Face Information:" << endl;
+	cout << "Total Number of Faces:" << Faces::numFaces << endl;
+	for (int i =0 ; i < Faces::numFaces; i++)
+	{
+		cout << ptrfaces[i].memberVerts[0] << " " << ptrfaces[i].memberVerts[1] << " " << ptrfaces[i].memberVerts[2]<< endl;;
+	}
+
+	cout << "Printing the Face Information:" << endl;
+	cout << "Total Number of Vertices:" << Vertices::numVertices << endl;
+	for (int i =0 ; i < Vertices::numVertices; i++)
+	{
+		cout << ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;;
+		
+		cout << "Adjacent Vertices for Vertex no. " << i << endl;
+		set<int> :: iterator it;
+		for(it = ptrvertices[i].adjacentVert.begin(); it!=ptrvertices[i].adjacentVert.end(); it++)
+		{
+				cout << *it << "  ";
+				
+		}
+		cout << endl;
+		
+		cout << " Faces part of Vertex no. " << i << endl;
+
+		for(it = ptrvertices[i].facesIncVert.begin(); it!=ptrvertices[i].facesIncVert.end(); it++)
+		{
+				cout << *it << "  ";
+				
+		}
+
+		cout << endl;
+	}
+
+	
+	return 0;
+
+
+}

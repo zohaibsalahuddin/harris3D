@@ -6,12 +6,20 @@
  *	This file contains implementation for functions 
  *	to open the input file containing the vertices
  *	and faces information
+------------------------------------------------
+ *	Created By:
+ *		Zohaib Salahuddin
+ *		Abdullah Thabit
+ *		Ahmed Mustafa Ahmed AbdulMajid Gouda
 */
 
 #include <iostream>
 #include <string>
 #include <fstream>
-#define TEST
+#include "Faces.h"
+#include "Vertices.h"
+#include <set>
+#define NOTEST
 
 // TODO: See if namespace is used in the professional set up
 using namespace std;
@@ -27,7 +35,8 @@ using namespace std;
 *
 */
 
-void skipline(istream &in){
+void skipline(istream &in)
+{
 	char c;
 	while(in>>noskipws>>c && c!='\n');
 	in>>skipws;
@@ -42,23 +51,24 @@ void skipline(istream &in){
  * 
  *	Parameters:
  *	absPath : String : The path to the file.
- *	vertexinfo: (TODO) DataStructure : This contains
+ *	ptrVertices: Vertices *& : This contains
  *		  the vertices information that is read
  *		  from the file.
- *	faceinfo: (TODO) DataStructure : This contains
+ *	ptrFaces: Faces *& : This contains
  *		  the face information that is read
  *		  from the file.
  *	Return  : int : Return -1 in case of failure
 */
 
-int readVertFace (const string filePath , int dummy_vertex , int dummy_face)
+int readVertFace (const string filePath , Faces *& ptrFaces, Vertices *& ptrVertices)
 {
+
 	int total_vertices =0;
 	int total_Vertices; // Total Number of Vertices
 	int total_Faces; // Total Number of Faces
 	double vertx, verty, vertz;
 	int numface =0; // stores the number of faces in the file.
-	int face1, face2,face3;
+	int memface1, memface2,memface3;
 	string check_off;
 	ifstream file;
 	
@@ -81,7 +91,10 @@ int readVertFace (const string filePath , int dummy_vertex , int dummy_face)
 
 	file>>total_Vertices>>total_Faces;
 	skipline(file); // moving to the next file
-
+	
+	// instantiating total number of faces and vertices
+	ptrFaces = new Faces[total_Faces];
+	ptrVertices = new Vertices[total_Vertices];
 
 	// Displaying the Vertices
 	cout << "DISPLAYING THE VERTICES" << endl;
@@ -89,6 +102,7 @@ int readVertFace (const string filePath , int dummy_vertex , int dummy_face)
 	{
 		file>>vertx>>verty>>vertz;
 		cout << vertx << " " << verty << " " << vertz << endl;
+		ptrVertices[i].setValues(vertx,verty,vertz);
 		skipline(file);
 	}
 	
@@ -105,8 +119,19 @@ int readVertFace (const string filePath , int dummy_vertex , int dummy_face)
 				"triangular faces.ABORT!" << endl;
 			return -1;
 		}
-		file>>face1>>face2>>face3;
-		cout << face1 << " " << face2 << " " << face3 << endl;
+		file>>memface1>>memface2>>memface3;
+		cout << memface1 << " " << memface2 << " " << memface3 << endl;
+		
+		//adding information in the respective face.
+		ptrFaces[i].addFaceInfo(memface1,memface2,memface3);
+		ptrVertices[memface1].addFace(i);
+		ptrVertices[memface2].addFace(i);
+		ptrVertices[memface3].addFace(i);
+
+		ptrVertices[memface1].addAdjacentVert(memface2,memface3);
+		ptrVertices[memface2].addAdjacentVert(memface1,memface3);
+		ptrVertices[memface3].addAdjacentVert(memface1,memface2);
+		//adding faces in the respective 
 		skipline(file);
 	}
 	
