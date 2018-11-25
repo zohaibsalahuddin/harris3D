@@ -52,7 +52,8 @@ class Vertices
 
 		void getRingNeighborhood (int level_depth, Vertices * & vertex_in , set <int> & neighborhood)
 		{
-			set<int>  temp_vert;	
+			set<int>  temp_vert;
+			set<int>  temp_vert2;	
 			cout << "In Neighborhood Function" << endl;	
 			for (int i =0 ; i <= level_depth; i++)
 			{	
@@ -64,23 +65,25 @@ class Vertices
 					neighborhood.insert(index);
 				}
 				else
-				{	cout << "Point" << endl;
+				{	//cout << "Point" << endl;
 					set<int> :: iterator it;
-					for(it = temp_vert.begin(); it!=temp_vert.end(); )
-					{	cout << "Investigating Vertex No. "  << *it << endl;
+					for(it = temp_vert.begin(); it!=temp_vert.end();it++ )
+					{	//cout << "Investigating Vertex No. "  << *it << endl;
 
-						set<int> :: iterator current = it++;
-						cout << "Marked Status" << vertex_in[*current].marked  << endl;
-						if (vertex_in[*current].marked == 0)
+						
+						//cout << "Marked Status" << vertex_in[*current].marked  << endl;
+						if (vertex_in[*it].marked == 0)
 						{
-							temp_vert.insert(vertex_in[*current].adjacentVert.begin(),
-									 vertex_in[*current].adjacentVert.end());
-							neighborhood.insert(vertex_in[*current].adjacentVert.begin(),
-									 vertex_in[*current].adjacentVert.end());
-						    	vertex_in[*current].marked = 1;
+							temp_vert2.insert(vertex_in[*it].adjacentVert.begin(),
+									 vertex_in[*it].adjacentVert.end());
+							neighborhood.insert(vertex_in[*it].adjacentVert.begin(),
+									 vertex_in[*it].adjacentVert.end());
+						    	vertex_in[*it].marked = 1;
 						}
-						temp_vert.erase(current);
-					}					
+					}
+						temp_vert.clear();
+						temp_vert.insert(temp_vert2.begin(),temp_vert2.end());					
+						temp_vert2.clear();			
 				}
 			}
 			

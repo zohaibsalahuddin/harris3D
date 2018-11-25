@@ -31,7 +31,7 @@ int main(void)
 	Vertices * ptrvertices;
 
 	cout << "Calling the Function to read the Vertex and Faces" << endl;
-	readVertFace("/home/zohaib123/Desktop/Harris3D/harris3D/src/cone.off",ptrfaces,ptrvertices);
+	readVertFace("/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off",ptrfaces,ptrvertices);
 
 	cout << "Printing the Face Information:" << endl;
 	cout << "Total Number of Faces:" << Faces::numFaces << endl;
@@ -70,7 +70,7 @@ int main(void)
 	for (int i =0 ; i < Vertices::numVertices; i++)
 	{
 
-		ptrvertices[i].getRingNeighborhood(1,ptrvertices,neighbor);
+		ptrvertices[i].getRingNeighborhood(3,ptrvertices,neighbor);
 		set<int> :: iterator it;
 		cout << "Vertex Neighborhood: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
 		for (it = neighbor.begin(); it!= neighbor.end(); it++)
