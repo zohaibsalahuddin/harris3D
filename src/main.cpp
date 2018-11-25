@@ -29,20 +29,24 @@ int main(void)
 	
 	Faces * ptrfaces;
 	Vertices * ptrvertices;
+	vector <Vertices> nVert;
+	int totalfaces =0;
+	int totalVertices =0;
 
 	cout << "Calling the Function to read the Vertex and Faces" << endl;
 	readVertFace("/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off",ptrfaces,ptrvertices);
-
+	totalfaces = Faces::numFaces;
+	totalVertices =Vertices::numVertices ;
 	cout << "Printing the Face Information:" << endl;
-	cout << "Total Number of Faces:" << Faces::numFaces << endl;
-	for (int i =0 ; i < Faces::numFaces; i++)
+	cout << "Total Number of Faces:" << totalfaces << endl;
+	for (int i =0 ; i < totalfaces; i++)
 	{
 		cout << ptrfaces[i].memberVerts[0] << " " << ptrfaces[i].memberVerts[1] << " " << ptrfaces[i].memberVerts[2]<< endl;;
 	}
 
 	cout << "Printing the Face Information:" << endl;
-	cout << "Total Number of Vertices:" << Vertices::numVertices << endl;
-	for (int i =0 ; i < Vertices::numVertices; i++)
+	cout << "Total Number of Vertices:" << totalVertices << endl;
+	for (int i =0 ; i < totalVertices; i++)
 	{
 		cout << ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
 		
@@ -67,18 +71,31 @@ int main(void)
 	}
 	set <int> neighbor;
 	cout << "The Neighborhood of all the vertices are:" << endl;
-	for (int i =0 ; i < Vertices::numVertices; i++)
+	for (int i =0 ; i < totalVertices; i++)
 	{
 
-		ptrvertices[i].getRingNeighborhood(3,ptrvertices,neighbor);
+		ptrvertices[i].getRingNeighborhood(1,ptrvertices,neighbor);
 		set<int> :: iterator it;
 		cout << "Vertex Neighborhood: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
 		for (it = neighbor.begin(); it!= neighbor.end(); it++)
-		{
+		{	
+			nVert.push_back(ptrvertices[*it]);
 			cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
 		}
+
+		
+		vector<Vertices> :: iterator itv;
+		cout << " Neighborhood Vertices: " << endl;
+		for (itv = nVert.begin(); itv!= nVert.end(); itv++)
+		{	
+			cout << (*itv).vertx << " " << (*itv).verty << " " << (*itv).vertz<< endl;
+		}
+
+		nVert.clear();	
 		neighbor.clear();
+		
 	}	
+	
 	
 	return 0;
 

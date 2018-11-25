@@ -31,6 +31,7 @@ class Vertices
 		}
 		int marked=0;
 		int index=-1;
+		int harris_response;
 		set <int> facesIncVert;
 		set <int> adjacentVert;
 		double vertx,verty,vertz;
