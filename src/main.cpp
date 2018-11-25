@@ -44,7 +44,7 @@ int main(void)
 	cout << "Total Number of Vertices:" << Vertices::numVertices << endl;
 	for (int i =0 ; i < Vertices::numVertices; i++)
 	{
-		cout << ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;;
+		cout << ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
 		
 		cout << "Adjacent Vertices for Vertex no. " << i << endl;
 		set<int> :: iterator it;
@@ -65,7 +65,20 @@ int main(void)
 
 		cout << endl;
 	}
+	set <int> neighbor;
+	cout << "The Neighborhood of all the vertices are:" << endl;
+	for (int i =0 ; i < Vertices::numVertices; i++)
+	{
 
+		ptrvertices[i].getRingNeighborhood(1,ptrvertices,neighbor);
+		set<int> :: iterator it;
+		cout << "Vertex Neighborhood: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
+		for (it = neighbor.begin(); it!= neighbor.end(); it++)
+		{
+			cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
+		}
+		neighbor.clear();
+	}	
 	
 	return 0;
 

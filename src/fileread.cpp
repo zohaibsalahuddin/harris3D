@@ -103,6 +103,7 @@ int readVertFace (const string filePath , Faces *& ptrFaces, Vertices *& ptrVert
 		file>>vertx>>verty>>vertz;
 		cout << vertx << " " << verty << " " << vertz << endl;
 		ptrVertices[i].setValues(vertx,verty,vertz);
+		ptrVertices[i].index = i;
 		skipline(file);
 	}
 	
