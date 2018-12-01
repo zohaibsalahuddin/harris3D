@@ -18,6 +18,7 @@
 #include "Faces.h"
 #include "Vertices.h"
 #include "fileread.h"
+#include "pca.h"
 
 using namespace std;
 
@@ -83,6 +84,7 @@ int main(void)
 			//cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
 		}
 
+
 	/*	
 		vector<Vertices> :: iterator itv;
 		cout << " Neighborhood Vertices: " << endl;
@@ -91,6 +93,8 @@ int main(void)
 			cout << (*itv).vertx << " " << (*itv).verty << " " << (*itv).vertz<< endl;
 		}
 	*/
+		
+	
 		
 
 		nVert.clear();	
