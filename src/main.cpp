@@ -78,42 +78,47 @@ int main(void)
 		ptrvertices[i].getRingNeighborhood(1,ptrvertices,neighbor);
 		set<int> :: iterator it;
 		int i1 =0;
+		int vertex_index =0;
 		//cout << "Vertex Neighborhood: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
 		for (it = neighbor.begin(); it!= neighbor.end(); it++)
 		{	i1++;
+			if ((*it) == ptrvertices[i].index)
+			{
+				vertex_index = ptrvertices[i].index;
+			}
 			nVert.push_back(ptrvertices[*it]);
 			//cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
 		}
 
 
-		/*
-		vector<Vertices> :: iterator itv;
-		cout << " Neighborhood Vertices: " << endl;
-		for (itv = nVert.begin(); itv!= nVert.end(); itv++)
-		{	
-			cout << (*itv).vertx << " " << (*itv).verty << " " << (*itv).vertz<< endl;
-		}
-		*/
 		
 		double centerx,centery,centerz;
-		cout << "SET SIZE: " << i1 << endl;
+
 		if (nVert.size() > 6)
 		{
-
-
+			calculate_center (nVert,centerx,centery,centerz);
 			shift_center_to_zero (nVert, centerx, centery,centerz );
 			cout << centerx << "," << centery << "," << centerz<<endl;
 			cout << "MATRIX STARTS HERE" << endl;
 			
 			MatrixXd * eigen_vectors = pca_calculate(nVert);
+			//(*eigen_vectors).transposeInPlace();
 			cout << (*eigen_vectors) << endl;
 			cout << "MATRIX ENDS HERE" << endl;
+			direction_check_shift (nVert, eigen_vectors, vertex_index, centerx,centery,centerz);
+
  			pca_rotate (nVert, eigen_vectors);
 		}
 
-	
+		cout << "VERTEX: ";
+		vector<Vertices> :: iterator itv;
+		for(itv = nVert.begin(); itv!=nVert.end(); itv++)
+		{
+				cout << (*itv).vertx << "  "<< (*itv).verty  << "  "<< (*itv).vertz  << endl;
+				
+		}		
 		
-			cout << "Total Number of Vertices:" << totalVertices << endl;
+
 
 		nVert.clear();	
 		neighbor.clear();

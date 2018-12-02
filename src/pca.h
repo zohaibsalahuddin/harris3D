@@ -34,7 +34,7 @@ void shift_center_to_zero ( vector <Vertices> & nVert,double& centerx,double& ce
 MatrixXd * pca_calculate(vector <Vertices> & nVert);
 void pca_rotate (vector <Vertices> & nVert, MatrixXd * eigen_vectors);
 void calculate_center (vector <Vertices> & nVert,double& centerx,double& centery,double &centerz );
-
+void direction_check_shift (vector <Vertices> & nVert, MatrixXd * eigen_vectors, int index_vertex,double& centerx,double& centery,double &centerz);
 
 #endif
 
