@@ -60,10 +60,11 @@ class Vertices
 			{	
 				if ( i ==0)
 				{
+					neighborhood.insert(index);
+					marked = 1;
 					temp_vert.insert(adjacentVert.begin(),adjacentVert.end());
 					neighborhood.insert(adjacentVert.begin(),adjacentVert.end());
-					marked = 1;
-					neighborhood.insert(index);
+
 				}
 				else
 				{	//cout << "Point" << endl;

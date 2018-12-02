@@ -12,7 +12,7 @@
  *		Ahmed Mustafa Ahmed AbdulMajid Gouda
 */
 
-
+#include "Vertices.h"s
 #include "pca.h"
 
 using namespace std;
@@ -24,9 +24,9 @@ void calculate_center (vector <Vertices> & nVert, int total_vertices,double& cen
 	centerz = 0;
 	for (int i =0 ; i < total_vertices ; i++)
 	{	
-		centerx = nVert[i].vertx + centerx;
-		centery = nVert[i].verty + centery;
-		centerz = nVert[i].vertz + centerz;
+		centerx = nVert(i).vertx + centerx;
+		centery = nVert(i).verty + centery;
+		centerz = nVert(i).vertz + centerz;
 	}
 	centerx = centerx/total_vertices;
 	centery = centery/total_vertices;
@@ -38,7 +38,7 @@ void shift_center_to_zero ( vector <Vertices> & nVert, int total_vertices,double
 	calculate_center (nVert,centerx,centery,centerz);
 	for (int i =0; i < total_vertices; i++)
 	{
-		nVert[i].setValues(nVert.vertx - centerx, nVert.verty - centery , nVert.vertz - centerz);
+		nVert(i).setValues(nVert(i).vertx - centerx, nVert(i).verty - centery , nVert(i).vertz - centerz);
 	}
 }
 
@@ -49,9 +49,9 @@ MatrixXd * pca_calculate(vector <Vertices> & nVert, int total_vertices )
 
 	for(int i =0; i < total_vertices; i++)
 	{
-		data(i,1) = nVert.vertx;
-		data(i,2) = nVert.verty;
-		data(i,3) = nVert.vertz;
+		data(i,1) = nVert(i).vertx;
+		data(i,2) = nVert(i).verty;
+		data(i,3) = nVert(i).vertz;
 	}
 
   	MatrixXd covariance = MatrixXd::Zero(3, 3);
@@ -114,7 +114,7 @@ void pca_rotate (vector <Vertices> & nVert, MatrixXd * eigen_vectors, int total_
 
 	for (int i =0 ; i < total_vertices; i++)
 	{
-		nVert[i].setValues(x1*nVert[i].vertx + y1*nVert[i].verty + z1*nVert[i].vertz ,x2*nVert[i].vertx + y2*nVert[i].verty + z2*nVert[i].vertz,x3*nVert[i].vertx + y3*nVert[i].verty + z3*nVert[i].vertz);
+		//nVert[i].setValues(x1*nVert[i].vertx + y1*nVert[i].verty + z1*nVert[i].vertz ,x2*nVert[i].vertx + y2*nVert[i].verty + z2*nVert[i].vertz,x3*nVert[i].vertx + y3*nVert[i].verty + z3*nVert[i].vertz);
 
 	}
 

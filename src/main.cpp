@@ -21,7 +21,7 @@
 #include "pca.h"
 
 using namespace std;
-
+using namespace Eigen;
 int Faces::numFaces =0;
 int Vertices::numVertices =0;
 
@@ -94,7 +94,20 @@ int main(void)
 		}
 	*/
 		
+	double centerx,centery,centerz;
+
+		if (nVert.size() > 6)
+		{
+			calculate_center (nVert,centerx,centery,centerz );
+			cout << centerx << "," << centery << "," << centerz<<endl;
+			shift_center_to_zero (nVert, centerx, centery,centerz );
+			cout << "Here" << endl;
+			MatrixXd * eigen_vectors = pca_calculate(nVert);
+ 			pca_rotate (nVert, eigen_vectors);
+		}
+
 	
+		
 		
 
 		nVert.clear();	
