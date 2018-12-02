@@ -128,11 +128,11 @@ int main(void)
 		}		
 			quadratic_fit (nVert, p1, p2, p3, p4 , p5 ,p6);
 			response = get_harris_response (p1, p2, p3, p4 , p5 ,p6,k);
-			cout << "RESPONSE: "<< response << endl;
+			cout << "RESPONSE calculated: "<< response << endl;
 		}
 	
 		
-
+		delete eigen_vectors;
 
 		nVert.clear();	
 		neighbor.clear();
