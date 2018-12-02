@@ -55,7 +55,7 @@ class Vertices
 		{
 			set<int>  temp_vert;
 			set<int>  temp_vert2;	
-			cout << "In Neighborhood Function" << endl;	
+			//cout << "In Neighborhood Function" << endl;	
 			for (int i =0 ; i <= level_depth; i++)
 			{	
 				if ( i ==0)

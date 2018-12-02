@@ -28,6 +28,8 @@ void calculate_center (vector <Vertices> & nVert,double& centerx,double& centery
 		centery = nVert[i].verty + centery;
 		centerz = nVert[i].vertz + centerz;
 	}
+	cout << "Before Dividing: " << centerx << " " << centery<< " "  << centerz<< " "  << endl;
+	cout << "Size : " << nVert.size() << endl;
 	centerx = centerx/nVert.size();
 	centery = centery/nVert.size();
 	centerz = centerz/nVert.size();
@@ -45,17 +47,17 @@ void shift_center_to_zero ( vector <Vertices> & nVert,double& centerx,double& ce
 MatrixXd * pca_calculate(vector <Vertices> & nVert)
 {
 
-	MatrixXd data = MatrixXd::Zero(nVert.size(),3);
+	MatrixXd data = MatrixXd::Zero(3,nVert.size());
 
 	for(int i =0; i < nVert.size(); i++)
 	{
-		data(i,0) = nVert[i].vertx;
-		data(i,1) = nVert[i].verty;
-		data(i,2) = nVert[i].vertz;
+		data(0,i) = nVert[i].vertx;
+		data(1,i) = nVert[i].verty;
+		data(2,i) = nVert[i].vertz;
 	}
 
   	MatrixXd covariance = MatrixXd::Zero(3, 3);
-  	covariance = (1 / (double) 9) * data.transpose() * data;
+  	covariance = (1 / (double) (nVert.size()-1)) * data * data.transpose();
 
   	EigenSolver<MatrixXd> solver(covariance);
   	VectorXd eigen_values = VectorXd::Zero(3);
@@ -63,9 +65,13 @@ MatrixXd * pca_calculate(vector <Vertices> & nVert)
   
   	MatrixXd * eigen_vectors = new MatrixXd(MatrixXd::Zero(nVert.size(), 3));
   	*eigen_vectors = solver.eigenvectors().real();
-	cout << eigen_values << endl;
 	//Sorting the eigen values
 	VectorXd temp= VectorXd::Zero(3);
+
+	cout << "MATRIX BEFORRRRRREEEE"<< endl;
+	cout << *eigen_vectors << endl;
+	cout << "MATRIX After"<< endl;
+	cout << "Eigen Values" << eigen_values << endl;
 	if (eigen_values(0) < eigen_values(1))
 	{
 		temp = (*eigen_vectors).col(0);

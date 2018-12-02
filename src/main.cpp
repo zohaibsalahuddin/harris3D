@@ -77,38 +77,43 @@ int main(void)
 
 		ptrvertices[i].getRingNeighborhood(1,ptrvertices,neighbor);
 		set<int> :: iterator it;
-		cout << "Vertex Neighborhood: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
+		int i1 =0;
+		//cout << "Vertex Neighborhood: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
 		for (it = neighbor.begin(); it!= neighbor.end(); it++)
-		{	
+		{	i1++;
 			nVert.push_back(ptrvertices[*it]);
 			//cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
 		}
 
 
-	/*	
+		/*
 		vector<Vertices> :: iterator itv;
 		cout << " Neighborhood Vertices: " << endl;
 		for (itv = nVert.begin(); itv!= nVert.end(); itv++)
 		{	
 			cout << (*itv).vertx << " " << (*itv).verty << " " << (*itv).vertz<< endl;
 		}
-	*/
+		*/
 		
-	double centerx,centery,centerz;
-
+		double centerx,centery,centerz;
+		cout << "SET SIZE: " << i1 << endl;
 		if (nVert.size() > 6)
 		{
-			calculate_center (nVert,centerx,centery,centerz );
-			cout << centerx << "," << centery << "," << centerz<<endl;
+
+
 			shift_center_to_zero (nVert, centerx, centery,centerz );
-			cout << "Here" << endl;
+			cout << centerx << "," << centery << "," << centerz<<endl;
+			cout << "MATRIX STARTS HERE" << endl;
+			
 			MatrixXd * eigen_vectors = pca_calculate(nVert);
+			cout << (*eigen_vectors) << endl;
+			cout << "MATRIX ENDS HERE" << endl;
  			pca_rotate (nVert, eigen_vectors);
 		}
 
 	
 		
-		
+			cout << "Total Number of Vertices:" << totalVertices << endl;
 
 		nVert.clear();	
 		neighbor.clear();
