@@ -27,7 +27,7 @@ int Vertices::numVertices =0;
 
 int main(void)
 {
-	double k;
+	double k = 0.04;
 	Faces * ptrfaces;
 	Vertices * ptrvertices;
 	vector <Vertices> nVert;
@@ -81,11 +81,12 @@ int main(void)
 		int vertex_index =0;
 		//cout << "Vertex Neighborhood: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
 		for (it = neighbor.begin(); it!= neighbor.end(); it++)
-		{	i1++;
+		{	
 			if ((*it) == ptrvertices[i].index)
 			{
-				vertex_index = ptrvertices[i].index;
+				vertex_index = i1;
 			}
+			i1++;
 			nVert.push_back(ptrvertices[*it]);
 			//cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
 		}
@@ -108,19 +109,28 @@ int main(void)
 			cout << "MATRIX ENDS HERE" << endl;
 			direction_check_shift (nVert, eigen_vectors, vertex_index, centerx,centery,centerz);
  			pca_rotate (nVert, eigen_vectors);
-			shift_to_vertex_centerxy(nVert, vertex_index);
-			quadratic_fit (nVert, p1, p2, p3, p4 , p5 ,p6);
-			response = get_harris_response (p1, p2, p3, p4 , p5 ,p6,k);
-			cout << "RESPONSE: "<< response << endl;
-		}
 
-		cout << "VERTEX: ";
+		cout << "Before VERTEX: " << vertex_index << endl;
 		vector<Vertices> :: iterator itv;
 		for(itv = nVert.begin(); itv!=nVert.end(); itv++)
 		{
 				cout << (*itv).vertx << "  "<< (*itv).verty  << "  "<< (*itv).vertz  << endl;
 				
+		}	
+			cout << "Vertex Number" << vertex_index << endl;
+			shift_to_vertex_centerxy(nVert, vertex_index);
+
+		cout << "VERTEX: " << vertex_index << endl;
+		for(itv = nVert.begin(); itv!=nVert.end(); itv++)
+		{
+				cout << (*itv).vertx << "  "<< (*itv).verty  << "  "<< (*itv).vertz  << endl;
+				
 		}		
+			quadratic_fit (nVert, p1, p2, p3, p4 , p5 ,p6);
+			response = get_harris_response (p1, p2, p3, p4 , p5 ,p6,k);
+			cout << "RESPONSE: "<< response << endl;
+		}
+	
 		
 
 

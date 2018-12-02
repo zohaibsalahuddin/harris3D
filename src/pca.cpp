@@ -199,10 +199,12 @@ void direction_check_shift (vector <Vertices> & nVert, MatrixXd * eigen_vectors,
 
 void shift_to_vertex_centerxy(vector <Vertices> & nVert, int index_vertex)
 {
-		
+	double x = nVert[index_vertex].vertx;
+	double y = nVert[index_vertex].verty;
+	cout <<  "X " << x << "Y " << y << endl;	
 	for(int i = 0; i < nVert.size(); i++)
 	{
-		nVert[i].setValues(nVert[i].vertx - nVert[index_vertex].vertx,nVert[i].verty - nVert[index_vertex].verty,nVert[i].vertz);
+		nVert[i].setValues(nVert[i].vertx - x,nVert[i].verty - y,nVert[i].vertz);
 	}
 		
 }
