@@ -224,6 +224,7 @@ void quadratic_fit (vector <Vertices> & nVert, double & p1, double &p2, double &
 		B(i) =  nVert[i].vertz;
 	}
 
+	X =  data.colPivHouseholderQr().solve(B);
 	p1 =X(0);
 	p2 =X(1);
 	p3 =X(2);
@@ -232,7 +233,20 @@ void quadratic_fit (vector <Vertices> & nVert, double & p1, double &p2, double &
 	p6 =X(5);
 }
 
+double get_harris_response (double & p1, double &p2, double & p3, double &p4 , double & p5 , double &p6, double & k)
+{
+	double response;
+	double A,B,C;
+	double tr,det;
+	A = (p4*p4) + (2*p1*p1) + (2*p2*p2);
+	B = (p5*p5) + (2*p2*p2) + (2*p3*p3);
+	C = (p4*p5) + (2*p1*p2) + (2*p2*p3);
 
+	det = (A*B) - (C*C);
+	tr = A+B;
+	response = det - (k*tr*tr);
+	return response;
+}
 
 
 

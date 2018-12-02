@@ -27,7 +27,7 @@ int Vertices::numVertices =0;
 
 int main(void)
 {
-	
+	double k;
 	Faces * ptrfaces;
 	Vertices * ptrvertices;
 	vector <Vertices> nVert;
@@ -94,6 +94,7 @@ int main(void)
 		
 		double centerx,centery,centerz;
 		double  p1,p2,p3,p4,p5,p6;
+		double response =0;
 		if (nVert.size() > 6)
 		{
 			calculate_center (nVert,centerx,centery,centerz);
@@ -109,6 +110,8 @@ int main(void)
  			pca_rotate (nVert, eigen_vectors);
 			shift_to_vertex_centerxy(nVert, vertex_index);
 			quadratic_fit (nVert, p1, p2, p3, p4 , p5 ,p6);
+			response = get_harris_response (p1, p2, p3, p4 , p5 ,p6,k);
+			cout << "RESPONSE: "<< response << endl;
 		}
 
 		cout << "VERTEX: ";
