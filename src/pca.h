@@ -35,6 +35,8 @@ MatrixXd * pca_calculate(vector <Vertices> & nVert);
 void pca_rotate (vector <Vertices> & nVert, MatrixXd * eigen_vectors);
 void calculate_center (vector <Vertices> & nVert,double& centerx,double& centery,double &centerz );
 void direction_check_shift (vector <Vertices> & nVert, MatrixXd * eigen_vectors, int index_vertex,double& centerx,double& centery,double &centerz);
+void shift_to_vertex_centerxy(vector <Vertices> & nVert, int index_vertex);
+void quadratic_fit (vector <Vertices> & nVert, double & p1, double &p2, double & p3, double &p4 , double & p5 , double &p6);
 
 #endif
 

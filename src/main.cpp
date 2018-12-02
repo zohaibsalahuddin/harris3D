@@ -93,7 +93,7 @@ int main(void)
 
 		
 		double centerx,centery,centerz;
-
+		double  p1,p2,p3,p4,p5,p6;
 		if (nVert.size() > 6)
 		{
 			calculate_center (nVert,centerx,centery,centerz);
@@ -106,8 +106,9 @@ int main(void)
 			cout << (*eigen_vectors) << endl;
 			cout << "MATRIX ENDS HERE" << endl;
 			direction_check_shift (nVert, eigen_vectors, vertex_index, centerx,centery,centerz);
-
  			pca_rotate (nVert, eigen_vectors);
+			shift_to_vertex_centerxy(nVert, vertex_index);
+			quadratic_fit (nVert, p1, p2, p3, p4 , p5 ,p6);
 		}
 
 		cout << "VERTEX: ";

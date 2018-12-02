@@ -197,10 +197,40 @@ void direction_check_shift (vector <Vertices> & nVert, MatrixXd * eigen_vectors,
 
 }
 
+void shift_to_vertex_centerxy(vector <Vertices> & nVert, int index_vertex)
+{
+		
+	for(int i = 0; i < nVert.size(); i++)
+	{
+		nVert[i].setValues(nVert[i].vertx - nVert[index_vertex].vertx,nVert[i].verty - nVert[index_vertex].verty,nVert[i].vertz);
+	}
+		
+}
 
 
+void quadratic_fit (vector <Vertices> & nVert, double & p1, double &p2, double & p3, double &p4 , double & p5 , double &p6)
+{
+	MatrixXd data = MatrixXd::Zero(nVert.size(),6);
+	VectorXd B= VectorXd::Zero(nVert.size());
+	VectorXd X= VectorXd::Zero(6);
+	for(int i =0; i < nVert.size(); i++)
+	{
+		data(i,0) = (nVert[i].vertx* nVert[i].vertx)/2;
+		data(i,1) = nVert[i].vertx * nVert[i].verty;
+		data(i,2) = (nVert[i].verty * nVert[i].verty)/2;
+		data(i,3) = nVert[i].vertx;
+		data(i,4) = nVert[i].verty;
+		data(i,5) = 1;
+		B(i) =  nVert[i].vertz;
+	}
 
-
+	p1 =X(0);
+	p2 =X(1);
+	p3 =X(2);
+	p4 =X(3);
+	p5 =X(4);
+	p6 =X(5);
+}
 
 
 
