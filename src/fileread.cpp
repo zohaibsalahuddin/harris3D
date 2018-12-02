@@ -101,7 +101,7 @@ int readVertFace (const string filePath , Faces *& ptrFaces, Vertices *& ptrVert
 	for(int i = 0; i < total_Vertices; i++)
 	{
 		file>>vertx>>verty>>vertz;
-		cout << vertx << " " << verty << " " << vertz << endl;
+		//cout << vertx << " " << verty << " " << vertz << endl;
 		ptrVertices[i].setValues(vertx,verty,vertz);
 		ptrVertices[i].index = i;
 		skipline(file);
@@ -121,7 +121,7 @@ int readVertFace (const string filePath , Faces *& ptrFaces, Vertices *& ptrVert
 			return -1;
 		}
 		file>>memface1>>memface2>>memface3;
-		cout << memface1 << " " << memface2 << " " << memface3 << endl;
+		//cout << memface1 << " " << memface2 << " " << memface3 << endl;
 		
 		//adding information in the respective face.
 		ptrFaces[i].addFaceInfo(memface1,memface2,memface3);

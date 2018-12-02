@@ -28,8 +28,8 @@ void calculate_center (vector <Vertices> & nVert,double& centerx,double& centery
 		centery = nVert[i].verty + centery;
 		centerz = nVert[i].vertz + centerz;
 	}
-	cout << "Before Dividing: " << centerx << " " << centery<< " "  << centerz<< " "  << endl;
-	cout << "Size : " << nVert.size() << endl;
+	//cout << "Before Dividing: " << centerx << " " << centery<< " "  << centerz<< " "  << endl;
+	//cout << "Size : " << nVert.size() << endl;
 	centerx = centerx/nVert.size();
 	centery = centery/nVert.size();
 	centerz = centerz/nVert.size();
@@ -68,11 +68,11 @@ MatrixXd * pca_calculate(vector <Vertices> & nVert)
 	double temp_eigen_val = 0;
 	//Sorting the eigen values
 	VectorXd temp= VectorXd::Zero(3);
-	cout << "Eigen Values"  << endl;
-	cout << eigen_values << endl;
-	cout << "MATRIX BEFORRRRRREEEE"<< endl;
-	cout << *eigen_vectors << endl;
-	cout << "MATRIX After"<< endl;
+	//cout << "Eigen Values"  << endl;
+	//cout << eigen_values << endl;
+	//cout << "MATRIX BEFORRRRRREEEE"<< endl;
+	//cout << *eigen_vectors << endl;
+	//cout << "MATRIX After"<< endl;
 	
 
 	if (eigen_values(0) < eigen_values(1))
@@ -106,8 +106,8 @@ MatrixXd * pca_calculate(vector <Vertices> & nVert)
 		(*eigen_vectors).col(1) = temp;
 	}
 
-	cout << "Eigen Values"  << endl;
-	cout << eigen_values << endl;
+	//cout << "Eigen Values"  << endl;
+	//cout << eigen_values << endl;
 	return eigen_vectors;
 
 }
@@ -119,8 +119,8 @@ void pca_rotate (vector <Vertices> & nVert, MatrixXd * eigen_vectors)
 	double x1,x2,x3;
 	double y1,y2,y3;
 	double z1,z2,z3;
-	cout << "MATRIXXXX" << endl;
-	cout << *eigen_vectors <<endl;
+	//cout << "MATRIXXXX" << endl;
+	//cout << *eigen_vectors <<endl;
 	x1 = (*eigen_vectors)(0, 0);
 	x2 = (*eigen_vectors)(1, 0);
 	x3 = (*eigen_vectors)(2, 0);
@@ -133,13 +133,13 @@ void pca_rotate (vector <Vertices> & nVert, MatrixXd * eigen_vectors)
 	z2 = (*eigen_vectors)(1, 2);
 	z3 = (*eigen_vectors)(2, 2);
 
-
+	/*
 		cout << "MATRIX ##########" << endl;		
 		cout << x1 << " " << x2 << " " << x3 << endl;
 		cout << y1 << " " << y2 << " " << y3 << endl;
 		cout << z1 << " " << z2 << " " << z3 << endl;		
 		cout << "MATRIX ########" << endl;
-
+	*/
 	for (int i =0 ; i < nVert.size(); i++)
 	{
 		nVert[i].setValues(((x1*nVert[i].vertx) + (x2*nVert[i].verty) + (x3*nVert[i].vertz)) ,((y1*nVert[i].vertx) + (y2*nVert[i].verty) + (y3*nVert[i].vertz)),((z1*nVert[i].vertx) + (z2*nVert[i].verty) + (z3*nVert[i].vertz)));
@@ -175,18 +175,18 @@ void direction_check_shift (vector <Vertices> & nVert, MatrixXd * eigen_vectors,
 	z2 = (*eigen_vectors)(1, 2);
 	z3 = (*eigen_vectors)(2, 2);
 
-
+	/*
 		cout << "MATRIX 5##########" << endl;		
 		cout << x1 << " " << x2 << " " << x3 << endl;
 		cout << y1 << " " << y2 << " " << y3 << endl;
 		cout << z1 << " " << z2 << " " << z3 << endl;		
 		cout << "MATRIX ########" << endl;
-
+	*/
 	double threshold = z1*vshift_x + z2*vshift_y + z3*vshift_z;
 	
 	if(threshold < 0)
 	{
-		cout << "HERE?" << endl;
+		//cout << "HERE?" << endl;
 		(*eigen_vectors).col(2) = -1 * (*eigen_vectors).col(2);
 		temp = (*eigen_vectors).col(0);
 	 	(*eigen_vectors).col(0) = (*eigen_vectors).col(1);
@@ -201,7 +201,7 @@ void shift_to_vertex_centerxy(vector <Vertices> & nVert, int index_vertex)
 {
 	double x = nVert[index_vertex].vertx;
 	double y = nVert[index_vertex].verty;
-	cout <<  "X " << x << "Y " << y << endl;	
+	//cout <<  "X " << x << "Y " << y << endl;	
 	for(int i = 0; i < nVert.size(); i++)
 	{
 		nVert[i].setValues(nVert[i].vertx - x,nVert[i].verty - y,nVert[i].vertz);
@@ -250,7 +250,10 @@ double get_harris_response (double & p1, double &p2, double & p3, double &p4 , d
 	return response;
 }
 
-
+bool response_compare(Vertices a, Vertices b)
+{
+	return (a.harris_response > b.harris_response);
+}
 
 
 

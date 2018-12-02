@@ -31,7 +31,7 @@ class Vertices
 		}
 		int marked=0;
 		int index=-1;
-		int harris_response;
+		double harris_response;
 		set <int> facesIncVert;
 		set <int> adjacentVert;
 		double vertx,verty,vertz;
@@ -94,6 +94,23 @@ class Vertices
 				vertex_in[i].marked =0;			
 			}
 					      
+		}
+
+
+		int isMaximum(Vertices * & vertex_in)
+		{
+			set<int> :: iterator it;
+			for(it = adjacentVert.begin(); it!=adjacentVert.end();it++ )
+			{	
+				//cout << harris_response << " " << vertex_in[*it].harris_response << endl;
+				if (harris_response < vertex_in[*it].harris_response)
+				{
+					//cout << "Response False" << endl;
+					return -1; 	
+				}
+			}
+			//cout << "Response True" << endl;
+			return 0;
 		}
 };
  

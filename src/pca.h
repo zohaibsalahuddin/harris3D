@@ -38,6 +38,7 @@ void direction_check_shift (vector <Vertices> & nVert, MatrixXd * eigen_vectors,
 void shift_to_vertex_centerxy(vector <Vertices> & nVert, int index_vertex);
 void quadratic_fit (vector <Vertices> & nVert, double & p1, double &p2, double & p3, double &p4 , double & p5 , double &p6);
 double get_harris_response (double & p1, double &p2, double & p3, double &p4 , double & p5 , double &p6, double &k);
+bool response_compare(Vertices a, Vertices b);
 
 #endif
 
