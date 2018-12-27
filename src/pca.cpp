@@ -68,14 +68,14 @@ MatrixXd * pca_calculate(vector <Vertices> & nVert)
 	double temp_eigen_val = 0;
 	//Sorting the eigen values
 	VectorXd temp= VectorXd::Zero(3);
-	//cout << "Eigen Values"  << endl;
-	//cout << eigen_values << endl;
-	//cout << "MATRIX BEFORRRRRREEEE"<< endl;
-	//cout << *eigen_vectors << endl;
-	//cout << "MATRIX After"<< endl;
+	/*cout << "Eigen Values"  << endl;
+	cout << eigen_values << endl;
+	cout << "MATRIX BEFORRRRRREEEE"<< endl;
+	cout << *eigen_vectors << endl;
+	cout << "MATRIX After"<< endl;*/
 	
 
-	if (eigen_values(0) < eigen_values(1))
+	if (eigen_values(0) <= eigen_values(1))
 	{	
 
 		temp_eigen_val = eigen_values(0);
@@ -86,17 +86,17 @@ MatrixXd * pca_calculate(vector <Vertices> & nVert)
 		(*eigen_vectors).col(1) = temp;
 	}
 
-	if (eigen_values(1) < eigen_values(2))
+	if (eigen_values(1) <= eigen_values(2))
 	{
 		temp_eigen_val = eigen_values(1);
-		eigen_values(2) = eigen_values(1);
-		eigen_values(1) = temp_eigen_val;
+		eigen_values(1) = eigen_values(2);
+		eigen_values(2) = temp_eigen_val;
 		temp = (*eigen_vectors).col(1);
 		(*eigen_vectors).col(1) = (*eigen_vectors).col(2);
 		(*eigen_vectors).col(2) = temp;
 	}
 
-	if (eigen_values(0) < eigen_values(1))
+	if (eigen_values(0) <=eigen_values(1)  )
 	{
 		temp_eigen_val = eigen_values(0);
 		eigen_values(0) = eigen_values(1);
@@ -105,9 +105,10 @@ MatrixXd * pca_calculate(vector <Vertices> & nVert)
 		(*eigen_vectors).col(0) = (*eigen_vectors).col(1);
 		(*eigen_vectors).col(1) = temp;
 	}
-
-	//cout << "Eigen Values"  << endl;
-	//cout << eigen_values << endl;
+	/*cout << "Eigen Values" << endl;
+	cout << eigen_values << endl;
+	cout << "Eigen vectors"  << endl;
+	cout << (*eigen_vectors) << endl; */
 	return eigen_vectors;
 
 }
@@ -151,13 +152,15 @@ void pca_rotate (vector <Vertices> & nVert, MatrixXd * eigen_vectors)
 
 void direction_check_shift (vector <Vertices> & nVert, MatrixXd * eigen_vectors, int index_vertex, double& centerx,double& centery,double &centerz)
 {
-	
+
 	double vshift_x,vshift_y,vshift_z;
 	VectorXd temp = VectorXd::Zero(3);
+	//cout << "before vertex: " << nVert[index_vertex].vertx << " " << nVert[index_vertex].verty << " " << nVert[index_vertex].vertz << endl;
+	//cout << "center : " << centerx << " " << centery << " " << centerz << endl;
 	vshift_x = nVert[index_vertex].vertx - centerx;
 	vshift_y = nVert[index_vertex].verty - centery;
 	vshift_z = nVert[index_vertex].vertz - centerz;
-
+	//cout << "Vertex: " << vshift_x << " " << vshift_y << " " << vshift_z << endl;
 		
 	double x1,x2,x3;
 	double y1,y2,y3;
@@ -233,6 +236,8 @@ void quadratic_fit (vector <Vertices> & nVert, double & p1, double &p2, double &
 	p4 =X(3);
 	p5 =X(4);
 	p6 =X(5);
+	//cout << "coefficients" << endl;
+	//cout << p1 << " " << p2 << " " << p3 << " " << p4 << " " << p5 << " " << p6 << endl;
 }
 
 double get_harris_response (double & p1, double &p2, double & p3, double &p4 , double & p5 , double &p6, double & k)
@@ -240,10 +245,12 @@ double get_harris_response (double & p1, double &p2, double & p3, double &p4 , d
 	double response;
 	double A,B,C;
 	double tr,det;
+	//cout << p1 << " " << p2 << " " << p3 << " " << p4 << " " << p5 << " " << p6 << endl;
 	A = (p4*p4) + (2*p1*p1) + (2*p2*p2);
-	B = (p5*p5) + (2*p2*p2) + (2*p3*p3);
+	B = (p4*p4) + (2*p2*p2) + (2*p3*p3);
 	C = (p4*p5) + (2*p1*p2) + (2*p2*p3);
 
+	//cout << "A B C" << A << " " << B << " " << C <<endl;
 	det = (A*B) - (C*C);
 	tr = A+B;
 	response = det - (k*tr*tr);

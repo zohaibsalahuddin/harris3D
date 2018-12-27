@@ -24,158 +24,45 @@
 using namespace std;
 using namespace Eigen;
 
-int Faces::numFaces =0;
-int Vertices::numVertices =0;
+
 
 int main(void)
 {
 	// Parameters to be edited
-	double k = 0.04;
+	double harris_parameter = 0.04;
 	double fraction  = 0.01;
-	int radius_param =2;
+	int radius_param =5;
+	string filename1 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off";	
+	string filename2 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/bunny.off";	
+	string selection_type;
+	double ** result;
+	int size_result;
+	selection_type= "fraction";
 
-	Faces * ptrfaces;
-	Vertices * ptrvertices;
-	vector <Vertices> nVert;
-	int totalfaces =0;
-	int totalVertices =0;
+	int ret = cal_interest_points(result, size_result, filename2,harris_parameter,fraction,radius_param,selection_type);
 
-	cout << "Calling the Function to read the Vertex and Faces" << endl;
-	readVertFace("/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off",ptrfaces,ptrvertices);
-	totalfaces = Faces::numFaces;
-	totalVertices =Vertices::numVertices ;/*
-	cout << "Printing the Face Information:" << endl;
-	cout << "Total Number of Faces:" << totalfaces << endl;
-	for (int i =0 ; i < totalfaces; i++)
+	if (ret == 0)
 	{
-		cout << ptrfaces[i].memberVerts[0] << " " << ptrfaces[i].memberVerts[1] << " " << ptrfaces[i].memberVerts[2]<< endl;;
+		cout << "Interest Points Calculation Successful" << endl;
 	}
-	
-	cout << "Printing the Face Information:" << endl;
-	cout << "Total Number of Vertices:" << totalVertices << endl;
-	for (int i =0 ; i < totalVertices; i++)
+	else
 	{
-		cout << ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
-		
-		cout << "Adjacent Vertices for Vertex no. " << i << endl;
-		set<int> :: iterator it;
-		for(it = ptrvertices[i].adjacentVert.begin(); it!=ptrvertices[i].adjacentVert.end(); it++)
-		{
-				cout << *it << "  ";
-				
-		}
-		cout << endl;
-		
-		cout << " Faces part of Vertex no. " << i << endl;
-
-		for(it = ptrvertices[i].facesIncVert.begin(); it!=ptrvertices[i].facesIncVert.end(); it++)
-		{
-				cout << *it << "  ";
-				
-		}
-
-		cout << endl;
-	}*/
-	set <int> neighbor;
-	//cout << "The Neighborhood of all the vertices are:" << endl;
-	for (int i =0 ; i < totalVertices; i++)
-	{
-
-		ptrvertices[i].getRingNeighborhood(radius_param,ptrvertices,neighbor);
-		set<int> :: iterator it;
-		int i1 =0;
-		int vertex_index =0;
-		//cout << "Vertex Neighborhood: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
-		for (it = neighbor.begin(); it!= neighbor.end(); it++)
-		{	
-			if ((*it) == ptrvertices[i].index)
-			{
-				vertex_index = i1;
-			}
-			i1++;
-			nVert.push_back(ptrvertices[*it]);
-			//cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
-		}
-
-
-		
-		double centerx,centery,centerz;
-		double  p1,p2,p3,p4,p5,p6;
-		double response =0;
-		if (nVert.size() > 6)
-		{
-			calculate_center (nVert,centerx,centery,centerz);
-			shift_center_to_zero (nVert, centerx, centery,centerz );
-			//cout << centerx << "," << centery << "," << centerz<<endl;
-			//cout << "MATRIX STARTS HERE" << endl;
-			
-			MatrixXd * eigen_vectors = pca_calculate(nVert);
-			//(*eigen_vectors).transposeInPlace();
-			//cout << (*eigen_vectors) << endl;
-			//cout << "MATRIX ENDS HERE" << endl;
-			direction_check_shift (nVert, eigen_vectors, vertex_index, centerx,centery,centerz);
- 			pca_rotate (nVert, eigen_vectors);
-
-		/*cout << "Before VERTEX: " << vertex_index << endl;
-		vector<Vertices> :: iterator itv;
-		for(itv = nVert.begin(); itv!=nVert.end(); itv++)
-		{
-				cout << (*itv).vertx << "  "<< (*itv).verty  << "  "<< (*itv).vertz  << endl;
-				
-		}*/
-			//cout << "Vertex Number" << vertex_index << endl;
-			shift_to_vertex_centerxy(nVert, vertex_index);
-
-		/*cout << "VERTEX: " << vertex_index << endl;
-		for(itv = nVert.begin(); itv!=nVert.end(); itv++)
-		{
-				cout << (*itv).vertx << "  "<< (*itv).verty  << "  "<< (*itv).vertz  << endl;
-				
-		}
-		*/		
-			quadratic_fit (nVert, p1, p2, p3, p4 , p5 ,p6);
-			response = get_harris_response (p1, p2, p3, p4 , p5 ,p6,k);
-			//cout << "RESPONSE: "<< response << endl;
-			ptrvertices[i].harris_response = response;
-		}
-		else
-		{
-			ptrvertices[i].harris_response = DBL_MIN;
-		}
-		
-		nVert.clear();	
-		neighbor.clear();
-		
+		cout << "Interest Points Calculation Failed" << endl;
 	}
-		vector <Vertices> interest_points_all;
-		int flag;
-		for (int i =0 ; i < totalVertices; i++)
+
+		cout << "Iterating through the interest Points:" << endl;
+
+		for (int i =0; i < size_result; i++)
 		{
-			int flag = (ptrvertices[i].isMaximum(ptrvertices));
-
-			if (flag == 0)
-			{
-				interest_points_all.push_back(ptrvertices[i]);
-			}
-		
+			cout << " POINT " << i << " : " << "x " <<result[i][0] << "y " <<result[i][1] << " z " <<result[i][2]  <<endl;
 		}
-
-		sort(interest_points_all.begin(), interest_points_all.end(), response_compare);
-
-		int points_fraction = fraction * totalVertices;
-		
-		cout << "size of points: " << interest_points_all.size() << ", Fraction: " << points_fraction << endl;
-		cout << "Interest Points: " << endl;
-
-		for (int i = 0 ; ((i < points_fraction) & (i < interest_points_all.size()));i++)
-		{
-			cout << interest_points_all[i].vertx << " "<< interest_points_all[i].verty << " "<< interest_points_all[i].vertz << endl;
-		}
-		
-		
 	
-	
-	return 0;
+	for (int i =0; i < size_result ; i++)
+	{
+		delete[] result[i];
+	}
+
+	delete [] result;
 
 
 }

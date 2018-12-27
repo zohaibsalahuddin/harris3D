@@ -18,10 +18,19 @@
 
 #include "Faces.h"
 #include "Vertices.h"
+#include "pca.h"
+#include <iostream>
+#include <cfloat>
+#include <vector>
+#include "Faces.h"
+#include "Vertices.h"
+
 
 using namespace std;
 
 void skipline(istream &in);
 int readVertFace (const string filePath , Faces *& ptrFaces , Vertices *& ptrVertices);
+int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, int radius_param, string selection_type);
+
 
 #endif
