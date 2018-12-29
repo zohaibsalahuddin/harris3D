@@ -30,8 +30,8 @@ int main(void)
 {
 	// Parameters to be edited
 	double harris_parameter = 0.04;
-	double fraction  = 0.01;
-	int radius_param =5;
+	double fraction  = 0.25;
+	int radius_param =2;
 	string filename1 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off";	
 	string filename2 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/bunny.off";	
 	string selection_type;

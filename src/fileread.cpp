@@ -21,6 +21,7 @@
 #include "Vertices.h"
 #include <set>
 #include "pca.h"
+#include <math.h>
 #define NOTEST
 
 // TODO: See if namespace is used in the professional set up
@@ -145,6 +146,55 @@ int readVertFace (const string filePath , Faces *& ptrFaces, Vertices *& ptrVert
 
 } 
 
+float get_cluster_diag ( Vertices * & vertex_in , int total_num)
+{
+	float x_min=0,x_max=0,y_min=0,y_max=0,z_min=0,z_max=0;
+	float x,y,z;
+	float diagonal=0;
+
+	for (int i =0; i < total_num ; i++)
+	{
+		x = vertex_in[i].vertx;
+		y = vertex_in[i].verty;
+		z = vertex_in[i].vertz;
+
+		if (x < x_min)
+		{
+			x_min = x;
+		}
+
+		if ( x > x_max)
+		{
+			x_max = x;
+		}
+
+		if ( y < y_min)
+		{
+			y_min =y;
+		}
+
+		if ( y > y_max)
+		{
+			y_max = y;
+		}
+
+		if ( z < z_min)
+		{
+			z_min = z;
+		}
+
+		if ( z > z_max)
+		{
+			z_max = z;
+		}
+
+	}
+
+		 diagonal = sqrt((x_max - x_min)*(x_max - x_min) + (y_max - y_min)*(y_max - y_min) + (z_max - z_min)*(z_max - z_min));
+		return diagonal;
+}
+
+
 int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, int radius_param, string selection_type)
 {
 
@@ -154,13 +204,16 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 	int totalfaces =0;
 	int totalVertices =0;
 	double k = harris_parameter;
+	int flag_selection = 0;
 
 	if (selection_type == "fraction")
 	{
+		flag_selection =0;
 		cout << "Selecting Points by Fraction" << endl;
 	}
-	else if (selection_type == "fraction")
+	else if (selection_type == "clustering")
 	{
+		flag_selection =1;
 		cout << "Selecting points by Clustering" << endl;
 	}
 		
@@ -225,8 +278,9 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 		nVert.clear();	
 		neighbor.clear();
 		
-	}
+		}
 		vector <Vertices> interest_points_all;
+		vector <Vertices> interest_points_cluster;
 		int flag;
 		for (int i =0 ; i < totalVertices; i++)
 		{
@@ -253,25 +307,73 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 		cout << "size of points: " << interest_points_all.size() << ", Fraction: " << points_fraction << endl;
 		//cout << "Interest Points: " << endl;
 
-
-		size_result = points_fraction;
-		result = new double*[points_fraction];
-		for (int i =0 ; i < points_fraction ; i++)
+		if ( flag_selection == 0)
+		{
+			if ( points_fraction < interest_points_all.size())
+			{
+				size_result = points_fraction;
+			}
+			else 
+			{
+				size_result = interest_points_all.size();
+			}		
+		}
+		else if (flag_selection == 1)
+		{
+			size_result = interest_points_all.size();
+		}
+		
+		result = new double*[size_result];
+		for (int i =0 ; i < size_result ; i++)
 		{
 			result[i] = new double[3];
 						
 		}
-
-		for (int i = 0 ; ((i < points_fraction) & (i < interest_points_all.size()));i++)
+		float diag = (get_cluster_diag ( ptrvertices ,totalVertices));
+		float diag_thresh = (fraction * (get_cluster_diag ( ptrvertices ,totalVertices)));
+		cout << flag_selection << endl;
+		if (flag_selection == 0)
 		{
-			cout << interest_points_all[i].vertx << " "<< interest_points_all[i].verty << " "<< interest_points_all[i].vertz << endl;
-			result[i][0] = interest_points_all[i].vertx;
-			result[i][1] = interest_points_all[i].verty;
-			result[i][2] = interest_points_all[i].vertz;
+			for (int i = 0 ; ((i < points_fraction) & (i < interest_points_all.size()));i++)
+			{
+			
+				result[i][0] = interest_points_all[i].vertx;
+				result[i][1] = interest_points_all[i].verty;
+				result[i][2] = interest_points_all[i].vertz;
+			}
 		}
-		
+		else if (flag_selection == 1)
+		{	size_result = 0;
+			for(int i = 0; i < (interest_points_all.size() ); i++)
+			{
+				int flag_temp =0;
+				for(int j = 0; j < interest_points_cluster.size(); j++)
+				{
+					double x_dist = interest_points_cluster[j].vertx - interest_points_all[i].vertx;
+					double y_dist = interest_points_cluster[j].verty - interest_points_all[i].verty;
+					double z_dist = interest_points_cluster[j].vertz - interest_points_all[i].vertz;
+
+				if(sqrt(x_dist*x_dist + y_dist*y_dist + z_dist*z_dist) < diag_thresh)
+				{
+					flag_temp = 1;
+					break;
+				}
+				}
+
+				if (flag_temp == 0)
+				{
+					interest_points_cluster.push_back(interest_points_all[i]);
+					result[size_result][0] = interest_points_all[i].vertx;
+					result[size_result][1] = interest_points_all[i].verty;
+					result[size_result][2] = interest_points_all[i].vertz;
+					size_result++;
+				}
+				
+			}
+		}
 
 		neighbor.clear();
+		interest_points_cluster.clear();
 		interest_points_all.clear();
 		delete[] ptrfaces;
 		delete[] ptrvertices;
