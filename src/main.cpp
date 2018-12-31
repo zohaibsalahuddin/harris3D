@@ -61,8 +61,40 @@ int main(void)
 	{
 		delete[] result[i];
 	}
-
 	delete [] result;
+
+	int ** result_n;
+	int size_result_n;
+	int * face;
+	int ret2 = get_faces(result_n,face, size_result_n, filename2,2, -0.579332, 0.564556 , -0.318829);
+
+	cout << "neighborhood faces are" << endl;
+	for (int i =0 ; i < size_result_n ; i++)
+	{
+		cout << face[i] << endl;
+	}
+
+	for (int i =0; i < size_result_n ; i++)
+	{
+		delete[] result_n[i];
+	}
+	delete [] result_n;
+	delete[] face;
+
+	int ret3 = get_faces(result_n,face, size_result_n, filename2,2, 0.301401, -0.235867 , -0.392926 );
+
+	cout << "neighborhood faces are" << endl;
+	for (int i =0 ; i < size_result_n ; i++)
+	{
+		cout << face[i] << endl;
+	}
+
+	for (int i =0; i < size_result_n ; i++)
+	{
+		delete[] result_n[i];
+	}
+	delete [] result_n;
+	delete[] face;
 
 
 }

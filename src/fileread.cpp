@@ -385,6 +385,86 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 
 }
 
+int get_faces(int ** & result, int * & face, int & size_result, string filename,int radius_param, double x, double y , double z)
+{
+	Faces * ptrfaces;
+	Vertices * ptrvertices;
+	vector <Vertices> nVert;
+	int totalfaces =0;
+	int totalVertices =0;
+	set <int> neighbor;
+	int index_l;
+	vector<int> x_temp;
+	vector<int> y_temp;
+	vector<int> z_temp;
+	vector<int> face_no;
+
+	cout << "Calling the Function to read the Vertex and Faces" << endl;
+	int ret = readVertFace(filename,ptrfaces,ptrvertices) ;
+	if (ret != 0)
+	{
+		cout << "File Not Supported. Aborting" << endl;
+		return -1;
+	}
+
+	totalfaces = Faces::numFaces;
+	totalVertices =Vertices::numVertices ;
+	for (int i =0 ; i < totalVertices ; i++)
+	{
+		if ( (ptrvertices[i].vertx == x) && (ptrvertices[i].verty == y) && (ptrvertices[i].vertz = z))
+		{
+			index_l = i;
+			break;
+		}
+	
+	}
+
+	ptrvertices[index_l].getRingNeighborhood(radius_param,ptrvertices,neighbor);
+	
+
+	for (int i = 0; i < totalfaces ; i++)
+	{
+		if ( (neighbor.find(ptrfaces[i].memberVerts[0]) != neighbor.end()) && (neighbor.find(ptrfaces[i].memberVerts[1]) != neighbor.end()) &&(neighbor.find(ptrfaces[i].memberVerts[2]) != neighbor.end()))
+		{
+			x_temp.push_back(ptrfaces[i].memberVerts[0]);
+			y_temp.push_back(ptrfaces[i].memberVerts[1]);
+			z_temp.push_back(ptrfaces[i].memberVerts[2]);
+			face_no.push_back(i);
+		}
+
+	}
+
+	size_result = x_temp.size();
+	result = new int*[size_result];
+	face = new int[size_result];
+	for (int i =0 ; i < size_result ; i++)
+	{
+		result[i] = new int[3];
+						
+	}
+	
+	for ( int i = 0; i < size_result; i++)
+	{
+		result[i][0] = x_temp[i];
+		result[i][1] = y_temp[i];
+		result[i][2] = z_temp[i];
+		face[i] = face_no[i];		
+	}
+
+ 	Faces::numFaces =0;
+ 	Vertices::numVertices =0;
+
+	x_temp.clear();
+	y_temp.clear();
+	z_temp.clear();
+	face_no.clear();
+	neighbor.clear();
+	delete[] ptrfaces;
+	delete[] ptrvertices;
+
+	return 0;
+}
+
 #ifdef TEST
 int main ( void )
 {
