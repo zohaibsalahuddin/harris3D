@@ -195,7 +195,7 @@ float get_cluster_diag ( Vertices * & vertex_in , int total_num)
 }
 
 
-int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, int radius_param, string selection_type)
+int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, int radius_param, string selection_type,string n_type)
 {
 
 	Faces * ptrfaces;
@@ -233,7 +233,16 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 	for (int i =0 ; i < totalVertices; i++)
 	{
 		//cout << "Vertex: "<< ptrvertices[i].vertx << " " << ptrvertices[i].verty << " " << ptrvertices[i].vertz<< endl;
-		ptrvertices[i].getRingNeighborhood(radius_param,ptrvertices,neighbor);
+
+		if ( n_type == "ring")
+		{
+			ptrvertices[i].getRingNeighborhood(radius_param,ptrvertices,neighbor);
+		}
+		else if (n_type == "spatial")
+		{
+			ptrvertices[i].getAdaptiveNeighborhood ((radius_param * (get_cluster_diag ( ptrvertices ,totalVertices))), ptrvertices , neighbor, totalVertices);
+		}
+
 		set<int> :: iterator it;
 		int i1 =0;
 		int vertex_index =0;
@@ -244,7 +253,7 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 				vertex_index = i1;
 			}
 			i1++;
-			//cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
+			cout << ptrvertices[*it].vertx << " " << ptrvertices[*it].verty << " " << ptrvertices[*it].vertz<< endl;
 			nVert.push_back(ptrvertices[*it]);
 		}
 
@@ -371,7 +380,18 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 				
 			}
 		}
+/*
+		set<int> :: iterator itn;
+		set <int> nice;
+		ptrvertices[685].getRingNeighborhood (2, ptrvertices , nice);
+		cout << "Here" << endl;
+		for (itn = nice.begin(); itn!= nice.end(); itn++)
+		{	
+		
+			cout << ptrvertices[*itn].vertx << endl;
 
+		}	
+*/
 		neighbor.clear();
 		interest_points_cluster.clear();
 		interest_points_all.clear();
@@ -385,7 +405,7 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 
 }
 
-int get_faces(int ** & result, int * & face, int & size_result, string filename,int radius_param, double x, double y , double z)
+int get_faces(int ** & result, int * & face, int & size_result, string filename,int radius_param, double x, double y , double z, string n_type)
 {
 	Faces * ptrfaces;
 	Vertices * ptrvertices;
@@ -418,9 +438,15 @@ int get_faces(int ** & result, int * & face, int & size_result, string filename,
 		}
 	
 	}
-
-	ptrvertices[index_l].getRingNeighborhood(radius_param,ptrvertices,neighbor);
 	
+	if ( n_type == "ring")
+	{
+		ptrvertices[index_l].getRingNeighborhood(radius_param,ptrvertices,neighbor);
+	}
+	else if (n_type == "spatial")
+	{
+		ptrvertices[index_l].getAdaptiveNeighborhood ((radius_param * (get_cluster_diag ( ptrvertices ,totalVertices))), ptrvertices , neighbor, totalVertices);
+	}
 
 	for (int i = 0; i < totalfaces ; i++)
 	{

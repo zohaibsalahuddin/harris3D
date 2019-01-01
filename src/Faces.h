@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include <vector>
-
+#include <math.h>
 using namespace std;
 
 class Faces 
@@ -41,7 +41,6 @@ class Faces
 		} 
 	
 };
-
 
 
 #endif

@@ -30,8 +30,9 @@ int main(void)
 {
 	// Parameters to be edited
 	double harris_parameter = 0.04;
-	double fraction  = 0.25;
-	int radius_param =2;
+	double fraction  = 0.01;
+	int radius_param = 0.01;
+	string neighborhood_type = "spatial";
 	string filename1 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off";	
 	string filename2 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/bunny.off";	
 	string selection_type;
@@ -39,7 +40,7 @@ int main(void)
 	int size_result;
 	selection_type= "fraction";
 
-	int ret = cal_interest_points(result, size_result, filename2,harris_parameter,fraction,radius_param,selection_type);
+	int ret = cal_interest_points(result, size_result, filename2,harris_parameter,fraction,radius_param,selection_type,neighborhood_type);
 
 	if (ret == 0)
 	{
@@ -54,7 +55,7 @@ int main(void)
 
 		for (int i =0; i < size_result; i++)
 		{
-			cout << " POINT " << i << " : " << "x " <<result[i][0] << "y " <<result[i][1] << " z " <<result[i][2]  <<endl;
+			cout << " POINT " << i << " : " << " x " <<result[i][0] << " y " <<result[i][1] << " z " <<result[i][2]  <<endl;
 		}
 	
 	for (int i =0; i < size_result ; i++)
@@ -63,10 +64,11 @@ int main(void)
 	}
 	delete [] result;
 
+
 	int ** result_n;
 	int size_result_n;
 	int * face;
-	int ret2 = get_faces(result_n,face, size_result_n, filename2,2, -0.579332, 0.564556 , -0.318829);
+	int ret2 = get_faces(result_n,face, size_result_n, filename1,0.01,  -1.045, -0.069 , -0.069,neighborhood_type);
 
 	cout << "neighborhood faces are" << endl;
 	for (int i =0 ; i < size_result_n ; i++)
@@ -81,7 +83,9 @@ int main(void)
 	delete [] result_n;
 	delete[] face;
 
-	int ret3 = get_faces(result_n,face, size_result_n, filename2,2, 0.301401, -0.235867 , -0.392926 );
+
+/*
+	int ret3 = get_faces(result_n,face, size_result_n, filename1,2, 0.301401, -0.235867 , -0.392926 );
 
 	cout << "neighborhood faces are" << endl;
 	for (int i =0 ; i < size_result_n ; i++)
@@ -95,6 +99,6 @@ int main(void)
 	}
 	delete [] result_n;
 	delete[] face;
-
+*/
 
 }
