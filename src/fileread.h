@@ -30,7 +30,7 @@ using namespace std;
 
 void skipline(istream &in);
 int readVertFace (const string filePath , Faces *& ptrFaces , Vertices *& ptrVertices);
-int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, int radius_param, string selection_type,string n_type);
-int get_faces(int ** & result, int * & face, int & size_result, string filename,int radius_param, double x, double y , double z,string n_type);
+int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, double radius_param, string selection_type,string n_type);
+int get_faces(int ** & result, int * & face, int & size_result, string filename,double radius_param, double x, double y , double z,string n_type);
 
 #endif

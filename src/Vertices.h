@@ -110,7 +110,7 @@ class Vertices
 void getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , set <int> & neighborhood, int size)
 		{
 			double x ,y ,z ;
-			int level_depth = radius;
+			double level_depth = radius;
 			set<int>  temp_vert;
 			set<int>  temp_vert2;
 			map<int, double> distances;
@@ -164,18 +164,15 @@ void getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , set <int> 
 								if ( i > 0)
 								{
 
-
 									distances[vertex_in[*itn].index] = new_dist;
-								/*
 									if ( distances[vertex_in[*itn].index] == 0)
 									{
 										distances[vertex_in[*itn].index] = new_dist;
 									}
-									else if ( new_dist < distances[vertex_in[*it].index])
+									else if ( new_dist < distances[vertex_in[*itn].index])
 									{
 										distances[vertex_in[*itn].index] = new_dist;
 									}
-								*/
 								}
 								else 
 								{
@@ -191,16 +188,17 @@ void getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , set <int> 
 							
 							
 						}
+						
+					}
+						temp_vert.clear();
+						temp_vert.insert(temp_vert2.begin(),temp_vert2.end());					
+						temp_vert2.clear();	
 						if (max_dist > level_depth)
 						{
 							cout << "WTF" << endl;
 							flag =1;
 							break;
-						}
-					}
-						temp_vert.clear();
-						temp_vert.insert(temp_vert2.begin(),temp_vert2.end());					
-						temp_vert2.clear();			
+						}		
 				}
 			}
 			

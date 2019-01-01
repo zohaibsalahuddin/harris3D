@@ -195,7 +195,7 @@ float get_cluster_diag ( Vertices * & vertex_in , int total_num)
 }
 
 
-int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, int radius_param, string selection_type,string n_type)
+int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, double radius_param, string selection_type,string n_type)
 {
 
 	Faces * ptrfaces;
@@ -236,9 +236,10 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 
 		if ( n_type == "ring")
 		{
+			cout << "here" << endl;
 			ptrvertices[i].getRingNeighborhood(radius_param,ptrvertices,neighbor);
 		}
-		else if (n_type == "spatial")
+		else if (n_type == "adaptive")
 		{
 			ptrvertices[i].getAdaptiveNeighborhood ((radius_param * (get_cluster_diag ( ptrvertices ,totalVertices))), ptrvertices , neighbor, totalVertices);
 		}
@@ -405,7 +406,7 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 
 }
 
-int get_faces(int ** & result, int * & face, int & size_result, string filename,int radius_param, double x, double y , double z, string n_type)
+int get_faces(int ** & result, int * & face, int & size_result, string filename,double radius_param, double x, double y , double z, string n_type)
 {
 	Faces * ptrfaces;
 	Vertices * ptrvertices;
@@ -443,7 +444,7 @@ int get_faces(int ** & result, int * & face, int & size_result, string filename,
 	{
 		ptrvertices[index_l].getRingNeighborhood(radius_param,ptrvertices,neighbor);
 	}
-	else if (n_type == "spatial")
+	else if (n_type == "adaptive")
 	{
 		ptrvertices[index_l].getAdaptiveNeighborhood ((radius_param * (get_cluster_diag ( ptrvertices ,totalVertices))), ptrvertices , neighbor, totalVertices);
 	}

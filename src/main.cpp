@@ -31,8 +31,8 @@ int main(void)
 	// Parameters to be edited
 	double harris_parameter = 0.04;
 	double fraction  = 0.01;
-	int radius_param = 0.01;
-	string neighborhood_type = "spatial";
+	double radius_param = 2;
+	string neighborhood_type = "ring";
 	string filename1 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off";	
 	string filename2 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/bunny.off";	
 	string selection_type;
@@ -40,7 +40,7 @@ int main(void)
 	int size_result;
 	selection_type= "fraction";
 
-	int ret = cal_interest_points(result, size_result, filename2,harris_parameter,fraction,radius_param,selection_type,neighborhood_type);
+	int ret = cal_interest_points(result, size_result, filename1,harris_parameter,fraction,radius_param,selection_type,neighborhood_type);
 
 	if (ret == 0)
 	{
