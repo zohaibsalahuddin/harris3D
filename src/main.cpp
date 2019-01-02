@@ -31,9 +31,9 @@ int main(void)
 	// Parameters to be edited
 	double harris_parameter = 0.04;
 	double fraction  = 0.01;
-	double radius_param = 0.3;
-	string neighborhood_type = "adaptive";
-	string filename1 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off";	
+	double radius_param = 2;
+	string neighborhood_type = "ring";
+	string filename1 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/sphere.off";	
 	string filename2 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/bunny.off";	
 	string selection_type;
 	double ** result;
@@ -68,7 +68,35 @@ int main(void)
 	int ** result_n;
 	int size_result_n;
 	int * face;
-	int ret2 = get_faces(result_n,face, size_result_n, filename1,0.01,  -1.045, -0.069 , -0.069,neighborhood_type);
+	int ret2 = get_faces(result_n,face, size_result_n, filename1,radius_param, 0.426 , 0.64 , -0.64,neighborhood_type);
+
+	cout << "neighborhood faces are" << endl;
+	for (int i =0 ; i < size_result_n ; i++)
+	{
+		cout << face[i] << endl;
+	}
+
+	for (int i =0; i < size_result_n ; i++)
+	{
+		delete[] result_n[i];
+	}
+	delete [] result_n;
+	delete[] face;
+	ret2 = get_faces(result_n,face, size_result_n, filename1,radius_param,   0.426 , 0.64, 0.64,neighborhood_type);
+
+	cout << "neighborhood faces are" << endl;
+	for (int i =0 ; i < size_result_n ; i++)
+	{
+		cout << face[i] << endl;
+	}
+
+	for (int i =0; i < size_result_n ; i++)
+	{
+		delete[] result_n[i];
+	}
+	delete [] result_n;
+	delete[] face;
+ /*	ret2 = get_faces(result_n,face, size_result_n, filename1,radius_param,  0.069 , -1.045 , -0.069,neighborhood_type);
 
 	cout << "neighborhood faces are" << endl;
 	for (int i =0 ; i < size_result_n ; i++)
@@ -84,8 +112,37 @@ int main(void)
 	delete[] face;
 
 
-/*
-	int ret3 = get_faces(result_n,face, size_result_n, filename1,2, 0.301401, -0.235867 , -0.392926 );
+	int ret3 = get_faces(result_n,face, size_result_n, filename1,radius_param,-0.606 ,-0.606 ,-0.606 ,neighborhood_type);
+
+	cout << "neighborhood faces are" << endl;
+	for (int i =0 ; i < size_result_n ; i++)
+	{
+		cout << face[i] << endl;
+	}
+
+	for (int i =0; i < size_result_n ; i++)
+	{
+		delete[] result_n[i];
+	}
+	delete [] result_n;
+	delete[] face;
+
+	ret3 = get_faces(result_n,face, size_result_n, filename1,radius_param, -0.606 ,-0.606 ,0.606,neighborhood_type );
+
+	cout << "neighborhood faces are" << endl;
+	for (int i =0 ; i < size_result_n ; i++)
+	{
+		cout << face[i] << endl;
+	}
+
+	for (int i =0; i < size_result_n ; i++)
+	{
+		delete[] result_n[i];
+	}
+	delete [] result_n;
+	delete[] face;
+
+ret3 = get_faces(result_n,face, size_result_n, filename1,radius_param, -0.606 ,-0.606 ,0.606,neighborhood_type );
 
 	cout << "neighborhood faces are" << endl;
 	for (int i =0 ; i < size_result_n ; i++)
@@ -100,5 +157,4 @@ int main(void)
 	delete [] result_n;
 	delete[] face;
 */
-
 }

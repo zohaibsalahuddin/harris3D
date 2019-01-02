@@ -164,15 +164,15 @@ void getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , set <int> 
 								if ( i > 0)
 								{
 
-									//distances[vertex_in[*itn].index] = new_dist;
-									if ( distances[vertex_in[*itn].index] == 0)
-									{
-										distances[vertex_in[*itn].index] = new_dist;
-									}
-									else if ( new_dist < distances[vertex_in[*itn].index])
-									{
-										distances[vertex_in[*itn].index] = new_dist;
-									}
+									distances[vertex_in[*itn].index] = new_dist;
+									//if ( distances[vertex_in[*itn].index] == 0)
+									//{
+									//	distances[vertex_in[*itn].index] = new_dist;
+									//}
+									//else if ( new_dist < distances[vertex_in[*itn].index])
+									//{
+									//	distances[vertex_in[*itn].index] = new_dist;
+									//}
 								}
 								else 
 								{
@@ -212,6 +212,7 @@ void getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , set <int> 
 				vertex_in[i].marked =0;			
 			}
 			cout << "Size " <<  size << endl;
+			
 					      
 		}
 

@@ -406,6 +406,11 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 
 }
 
+bool double_equals (double a, double b, double epsilon = 0.001)
+{
+
+	return (abs(a-b) < epsilon);
+}
 int get_faces(int ** & result, int * & face, int & size_result, string filename,double radius_param, double x, double y , double z, string n_type)
 {
 	Faces * ptrfaces;
@@ -432,14 +437,19 @@ int get_faces(int ** & result, int * & face, int & size_result, string filename,
 	totalVertices =Vertices::numVertices ;
 	for (int i =0 ; i < totalVertices ; i++)
 	{
-		if ( (ptrvertices[i].vertx == x) && (ptrvertices[i].verty == y) && (ptrvertices[i].vertz = z))
+
+			cout << ptrvertices[i].vertx << " " <<  x<< endl;
+			cout << ptrvertices[i].verty << " " <<  y<< endl;
+			cout << ptrvertices[i].vertz << " " <<  z<< endl;
+		if ((double_equals(ptrvertices[i].vertx , x)) && (double_equals(ptrvertices[i].verty , y)) && (double_equals(ptrvertices[i].vertz , z)))
 		{
+			
 			index_l = i;
 			break;
 		}
 	
 	}
-	
+	cout << "index_l " << index_l << endl;
 	if ( n_type == "ring")
 	{
 		ptrvertices[index_l].getRingNeighborhood(radius_param,ptrvertices,neighbor);
