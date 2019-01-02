@@ -31,8 +31,8 @@ int main(void)
 	// Parameters to be edited
 	double harris_parameter = 0.04;
 	double fraction  = 0.01;
-	double radius_param = 2;
-	string neighborhood_type = "ring";
+	double radius_param = 0.3;
+	string neighborhood_type = "adaptive";
 	string filename1 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/epcot.off";	
 	string filename2 = "/home/zohaib123/Desktop/Harris3D/harris3D/src/bunny.off";	
 	string selection_type;

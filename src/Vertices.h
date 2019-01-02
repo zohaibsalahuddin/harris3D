@@ -118,7 +118,7 @@ void getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , set <int> 
 			double temp_dist =0;
 			distances[index] = 0;
 			int flag = 0;
-			cout << "radius" << radius << endl;
+			cout << "RADIUS  : " << radius << endl;
 		
 			//cout << "In Neighborhood Function" << endl;	
 			for (int i =0 ; flag == 0 ; i++)
@@ -164,7 +164,7 @@ void getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , set <int> 
 								if ( i > 0)
 								{
 
-									distances[vertex_in[*itn].index] = new_dist;
+									//distances[vertex_in[*itn].index] = new_dist;
 									if ( distances[vertex_in[*itn].index] == 0)
 									{
 										distances[vertex_in[*itn].index] = new_dist;
@@ -181,25 +181,30 @@ void getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , set <int> 
 								temp_dist = distances[vertex_in[*itn].index];
 
 								cout << " CHECK " << i <<  " : " << temp_dist << endl;
-								if (temp_dist > max_dist);
+								if (temp_dist > max_dist)
 									max_dist = temp_dist;		
 							}
 							
-							
+							cout << "WTF" << endl;
 							
 						}
-						
+						cout << "HI" << endl;
 					}
+						cout << " Hmmm " << endl;
 						temp_vert.clear();
 						temp_vert.insert(temp_vert2.begin(),temp_vert2.end());					
 						temp_vert2.clear();	
-						if (max_dist > level_depth)
+						if (max_dist > level_depth || temp_vert.size() == 0)
 						{
-							cout << "WTF" << endl;
+							cout << "WTF : "<<max_dist  << endl;
+							cout << level_depth << endl;		
+							cout << temp_vert.size() << "THIS" << endl;
 							flag =1;
 							break;
 						}		
+					cout << "sup " << endl;
 				}
+				cout << " TADAAAAA" << endl;
 			}
 			
 			for (int i =0 ; i < Vertices::numVertices; i++)
