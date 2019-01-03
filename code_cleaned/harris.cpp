@@ -1,11 +1,12 @@
 /*
-	Date Created: 23rd November
-	FILENAME : fileread.cpp
+	Date Created: 27th December
+	FILENAME : harris.cpp
 ------------------------------------------------
  *
- *	This file contains implementation for functions 
- *	to open the input file containing the vertices
- *	and faces information
+ *	This file contains declarations for functions
+ *	that will be required by the open gl interface.
+ * 	These function will be used to get 
+ *	neighborhood, interest points and everything.
 ------------------------------------------------
  *	Created By:
  *		Zohaib Salahuddin
@@ -13,187 +14,16 @@
  *		Ahmed Mustafa Ahmed AbdulMajid Gouda
 */
 
-#include <iostream>
-#include <string>
-#include <fstream>
-#include "fileread.h"
-#include "Faces.h"
-#include "Vertices.h"
-#include <set>
-#include "pca.h"
-#include <math.h>
-#define NOTEST
+#include "harris.h"
 
-// TODO: See if namespace is used in the professional set up
-using namespace std;
-
-/* 	Function : skipline
--------------------------------------------------
-*	This function is taken from the demo C++ code that
-*	inorder to skip the lines.
-*
-*	Parameters:
-*	in : istream & : It skills the line of the given input
-	     file stream
-*
-*/
 int Faces::numFaces =0;
 int Vertices::numVertices =0;
-void skipline(istream &in)
+
+bool double_equals (double a, double b, double epsilon = 0.001)
 {
-	char c;
-	while(in>>noskipws>>c && c!='\n');
-	in>>skipws;
+
+	return (abs(a-b) < epsilon);
 }
-
-
-/*
- *	Function : ReadVertices
--------------------------------------------------
- *	This function opens the file with the given 
- *	absolute path. 
- * 
- *	Parameters:
- *	absPath : String : The path to the file.
- *	ptrVertices: Vertices *& : This contains
- *		  the vertices information that is read
- *		  from the file.
- *	ptrFaces: Faces *& : This contains
- *		  the face information that is read
- *		  from the file.
- *	Return  : int : Return -1 in case of failure
-*/
-
-int readVertFace (const string filePath , Faces *& ptrFaces, Vertices *& ptrVertices)
-{
-
-	int total_vertices =0;
-	int total_Vertices; // Total Number of Vertices
-	int total_Faces; // Total Number of Faces
-	double vertx, verty, vertz;
-	int numface =0; // stores the number of faces in the file.
-	int memface1, memface2,memface3;
-	string check_off;
-	ifstream file;
-	
-
-	const char * path= filePath.c_str();	
-	file.open(path);// opening the file
-
-
-
-	// checking and skipping the line containing the OFF 
-	getline(file,check_off);
-	if (check_off.find("OFF") == string::npos)
-	{
-		cout << "This is not an OFF file as it does not"
-			"contain OFF in the first line" << endl;
-		cout << "Aborting" << endl;
-		return -1;	
-	} 
-
-
-	file>>total_Vertices>>total_Faces;
-	skipline(file); // moving to the next file
-	
-	// instantiating total number of faces and vertices
-	ptrFaces = new Faces[total_Faces];
-	ptrVertices = new Vertices[total_Vertices];
-
-	// Displaying the Vertices
-	cout << "DISPLAYING THE VERTICES" << endl;
-	for(int i = 0; i < total_Vertices; i++)
-	{
-		file>>vertx>>verty>>vertz;
-		//cout << vertx << " " << verty << " " << vertz << endl;
-		ptrVertices[i].setValues(vertx,verty,vertz);
-		ptrVertices[i].index = i;
-		skipline(file);
-	}
-	
-
-	cout << "DISPLAYING THE FACES" << endl;
-	// Displaying the Faces
-	for(int i = 0; i < total_Faces; i++)
-	{		
-		// This contains implementation of only triangular faces
-		file >> numface;		
-		if (numface !=3)
-		{
-			cout << "This contains only implementation for"
-				"triangular faces.ABORT!" << endl;
-			return -1;
-		}
-		file>>memface1>>memface2>>memface3;
-		//cout << memface1 << " " << memface2 << " " << memface3 << endl;
-		
-		//adding information in the respective face.
-		ptrFaces[i].addFaceInfo(memface1,memface2,memface3);
-		ptrVertices[memface1].addFace(i);
-		ptrVertices[memface2].addFace(i);
-		ptrVertices[memface3].addFace(i);
-
-		ptrVertices[memface1].addAdjacentVert(memface2,memface3);
-		ptrVertices[memface2].addAdjacentVert(memface1,memface3);
-		ptrVertices[memface3].addAdjacentVert(memface1,memface2);
-		//adding faces in the respective 
-		skipline(file);
-	}
-	
-
-	file.close();	
-	return 0;
-
-} 
-
-float get_cluster_diag ( Vertices * & vertex_in , int total_num)
-{
-	float x_min=0,x_max=0,y_min=0,y_max=0,z_min=0,z_max=0;
-	float x,y,z;
-	float diagonal=0;
-
-	for (int i =0; i < total_num ; i++)
-	{
-		x = vertex_in[i].vertx;
-		y = vertex_in[i].verty;
-		z = vertex_in[i].vertz;
-
-		if (x < x_min)
-		{
-			x_min = x;
-		}
-
-		if ( x > x_max)
-		{
-			x_max = x;
-		}
-
-		if ( y < y_min)
-		{
-			y_min =y;
-		}
-
-		if ( y > y_max)
-		{
-			y_max = y;
-		}
-
-		if ( z < z_min)
-		{
-			z_min = z;
-		}
-
-		if ( z > z_max)
-		{
-			z_max = z;
-		}
-
-	}
-
-		 diagonal = sqrt((x_max - x_min)*(x_max - x_min) + (y_max - y_min)*(y_max - y_min) + (z_max - z_min)*(z_max - z_min));
-		return diagonal;
-}
-
 
 int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, double radius_param, string selection_type,string n_type)
 {
@@ -406,11 +236,10 @@ int cal_interest_points(double ** & result, int & size_result, string filename, 
 
 }
 
-bool double_equals (double a, double b, double epsilon = 0.001)
-{
 
-	return (abs(a-b) < epsilon);
-}
+
+
+
 int get_faces(int ** & result, int * & face, int & size_result, string filename,double radius_param, double x, double y , double z, string n_type)
 {
 	Faces * ptrfaces;
@@ -501,16 +330,4 @@ int get_faces(int ** & result, int * & face, int & size_result, string filename,
 
 	return 0;
 }
-
-#ifdef TEST
-int main ( void )
-{
-	cout << "Calling the Function to read the Vertex and Faces" << endl;
-	readVertFace("/home/zohaib123/Desktop/Harris3D/harris3D/src/cone.off",0,0);
-	return 0;
-}
- 
-#endif
-
-
 

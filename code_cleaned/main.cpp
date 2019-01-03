@@ -18,8 +18,9 @@
 #include <vector>
 #include "Faces.h"
 #include "Vertices.h"
-#include "fileread.h"
+#include "mesh.h"
 #include "pca.h"
+#include "harris.h"
 
 using namespace std;
 using namespace Eigen;

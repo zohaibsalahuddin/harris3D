@@ -195,6 +195,56 @@ void Vertices::getAdaptiveNeighborhood (double radius, Vertices * & vertex_in , 
 			      
 }
 
+float get_cluster_diag ( Vertices * & vertex_in , int total_num)
+{
+	float x_min=0,x_max=0,y_min=0,y_max=0,z_min=0,z_max=0;
+	float x,y,z;
+	float diagonal=0;
+
+	for (int i =0; i < total_num ; i++)
+	{
+		x = vertex_in[i].vertx;
+		y = vertex_in[i].verty;
+		z = vertex_in[i].vertz;
+
+		if (x < x_min)
+		{
+			x_min = x;
+		}
+
+		if ( x > x_max)
+		{
+			x_max = x;
+		}
+
+		if ( y < y_min)
+		{
+			y_min =y;
+		}
+
+		if ( y > y_max)
+		{
+			y_max = y;
+		}
+
+		if ( z < z_min)
+		{
+			z_min = z;
+		}
+
+		if ( z > z_max)
+		{
+			z_max = z;
+		}
+
+	}
+
+		 diagonal = sqrt((x_max - x_min)*(x_max - x_min) + (y_max - y_min)*(y_max - y_min) + (z_max - z_min)*(z_max - z_min));
+		return diagonal;
+}
+
+
+
 int Vertices::isMaximum(Vertices * & vertex_in)
 {
 	set<int> :: iterator it;
@@ -208,3 +258,5 @@ int Vertices::isMaximum(Vertices * & vertex_in)
 
 	return 0;
 }
+
+

@@ -1,11 +1,12 @@
 /*
-	Date Created: 23rd November
-	FILENAME : fileread.cpp
+	Date Created: 27th December
+	FILENAME : harris.h
 ------------------------------------------------
  *
- *	This file contains declarations for functions 
- *	to open the input file containing the vertices
- *	and faces information
+ *	This file contains definitions for functions
+ *	that will be required by the open gl interface.
+ * 	These function definitions will be used to get 
+ *	neighborhood, interest points and everything.
 ------------------------------------------------
  *	Created By:
  *		Zohaib Salahuddin
@@ -13,24 +14,25 @@
  *		Ahmed Mustafa Ahmed AbdulMajid Gouda
 */
 
-#ifndef __FILE_READ__
-#define __FILE_READ__
 
-#include "Faces.h"
-#include "Vertices.h"
-#include "pca.h"
+#ifndef __HARRIS__
+#define __HARRIS__
+
 #include <iostream>
-#include <cfloat>
-#include <vector>
+#include <string>
+#include <fstream>
+#include "mesh.h"
 #include "Faces.h"
 #include "Vertices.h"
+#include <set>
+#include "pca.h"
+#include <math.h>
 
 
-using namespace std;
-
-void skipline(istream &in);
-int readVertFace (const string filePath , Faces *& ptrFaces , Vertices *& ptrVertices);
+bool double_equals (double a, double b, double epsilon);
 int cal_interest_points(double ** & result, int & size_result, string filename, double harris_parameter, double fraction, double radius_param, string selection_type,string n_type);
 int get_faces(int ** & result, int * & face, int & size_result, string filename,double radius_param, double x, double y , double z,string n_type);
+
+
 
 #endif

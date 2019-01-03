@@ -49,6 +49,7 @@ class Vertices
 
 };
  
+float get_cluster_diag ( Vertices * & vertex_in , int total_num);
 
 		
 
